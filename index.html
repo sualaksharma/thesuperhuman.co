@@ -125,6 +125,40 @@
     box-shadow: 0 0 10px rgba(242,162,28,0.8);
     transition: width 0.12s linear;
   }
+  /* mobile stage pill: human → superhuman, phone-sized */
+  #mobileStage {
+    display: none; position: fixed; z-index: 96;
+    bottom: 1rem; left: 50%; transform: translateX(-50%) translateY(70px);
+    align-items: center; gap: 0.55rem;
+    background: rgba(10,10,13,0.94);
+    border: 1px solid rgba(242,162,28,0.35);
+    border-radius: 999px;
+    padding: 0.45rem 0.9rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.7), 0 0 18px -6px rgba(242,162,28,0.5);
+    font-family: 'JetBrains Mono', monospace;
+    pointer-events: none;
+    transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+  }
+  #mobileStage.show { transform: translateX(-50%) translateY(0); }
+  #mobileStage .ms-track {
+    width: 54px; height: 4px; border-radius: 2px;
+    background: rgba(255,255,255,0.12); position: relative; overflow: hidden;
+  }
+  #mobileStage .ms-track i {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 0%;
+    background: linear-gradient(90deg, var(--volt-dk), var(--volt), var(--volt-hot));
+    border-radius: 2px;
+  }
+  #mobileStage .ms-pct {
+    font-family: 'Bebas Neue', sans-serif; font-size: 0.95rem;
+    color: var(--volt); line-height: 1; min-width: 2.6ch;
+  }
+  #mobileStage .ms-label {
+    font-size: 0.52rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--bone);
+  }
+  #mobileStage .ms-ico { font-size: 0.8rem; line-height: 1; }
 
   /* ============ NAV ============ */
   nav {
@@ -522,6 +556,10 @@
     color: var(--faint); text-transform: uppercase; line-height: 1.8;
     min-height: 2.4em; transition: color 0.4s;
   }
+  .amb-val {
+    font-size: 0.58rem; letter-spacing: 0.14em; color: var(--volt);
+    text-transform: uppercase; text-align: right;
+  }
   .scan-verdict.bad { color: var(--blood); }
   .scan-verdict.good { color: var(--volt); }
   .scan-cta { margin-top: 1.2rem; display: none; }
@@ -572,17 +610,63 @@
   .pillar-desc { color: var(--dim); font-size: 0.88rem; line-height: 1.8; }
   .pillar-desc strong { color: var(--bone); font-weight: 500; }
 
-  /* ============ STATS ============ */
-  .stats { background: var(--void); border-top: 1px solid var(--line); }
-  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-  .stat-cell { background: var(--void); padding: 3rem 2rem; text-align: center; transition: background 0.3s; }
-  .stat-cell:hover { background: var(--panel); }
-  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 5.5vw, 4.6rem); color: var(--white); line-height: 1; }
-  .stat-num sup { color: var(--volt); font-size: 0.45em; }
-  .stat-lab {
+  /* ============ TRUST ============ */
+  .trust { background: var(--void); border-top: 1px solid var(--line); }
+  .trust-sub { max-width: 560px; margin-top: 1.4rem; }
+  .trust-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--line); border: 1px solid var(--line);
+    margin-top: 3.5rem;
+  }
+  .trust-badge {
+    background: var(--void); padding: 2.2rem 2rem;
+    transition: background 0.3s;
+  }
+  .trust-badge:hover { background: var(--panel); }
+  .tb-icon { width: 30px; height: 30px; color: var(--volt); margin-bottom: 1.1rem; }
+  .tb-icon svg { width: 100%; height: 100%; }
+  .tb-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.25rem; letter-spacing: 0.06em; color: var(--white);
+    margin-bottom: 0.4rem;
+  }
+  .tb-desc { color: var(--dim); font-size: 0.82rem; line-height: 1.7; }
+
+  .label-duel {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 1.6rem; align-items: stretch; margin-top: 3rem;
+  }
+  .ld-card {
+    border: 1px solid var(--line); padding: 1.8rem 1.9rem;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.58rem; letter-spacing: 0.24em; text-transform: uppercase;
-    color: var(--dim); margin-top: 0.8rem;
+  }
+  .ld-them { background: #121013; border-color: rgba(255,77,46,0.25); }
+  .ld-ours { background: #14110A; border-color: rgba(242,162,28,0.4); box-shadow: 0 0 40px -18px rgba(242,162,28,0.4); }
+  .ld-tag {
+    font-size: 0.55rem; letter-spacing: 0.26em; text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .ld-them .ld-tag { color: var(--blood); }
+  .ld-ours .ld-tag { color: var(--volt); }
+  .ld-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; letter-spacing: 0.04em; color: var(--bone);
+    margin-bottom: 1.2rem;
+  }
+  .ld-row {
+    display: flex; justify-content: space-between; gap: 1rem;
+    padding: 0.7rem 0; border-bottom: 1px dashed rgba(255,255,255,0.08);
+    font-size: 0.7rem; color: var(--bone);
+  }
+  .ld-blur { filter: blur(2.2px); opacity: 0.55; user-select: none; }
+  .ld-q { color: var(--blood); }
+  .ld-a { color: var(--volt); white-space: nowrap; }
+  .ld-foot { margin-top: 1.1rem; font-size: 0.6rem; line-height: 1.8; color: var(--blood); letter-spacing: 0.05em; }
+  .ld-foot-good { color: var(--volt); }
+  .ld-vs {
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem;
+    color: var(--faint); letter-spacing: 0.1em;
   }
 
   /* ============ TRANSMISSIONS ============ */
@@ -669,7 +753,9 @@
     .mani-grid, .diag-grid { grid-template-columns: 1fr; gap: 3rem; }
     .pillar-grid { grid-template-columns: 1fr; }
     .proof-grid { grid-template-columns: 1fr 1fr; }
-    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .trust-grid { grid-template-columns: 1fr 1fr; }
+    .label-duel { grid-template-columns: 1fr; }
+    .ld-vs { padding: 0.2rem 0; }
     .cmp-row { grid-template-columns: 120px 1fr; }
   }
   /* Reserve space for the evolution rail: on screens where the centered
@@ -687,6 +773,7 @@
     .proof-grid { grid-template-columns: 1fr; }
     #meter { display: none; }
     #mobileBar { display: block; }
+    #mobileStage { display: flex; }
     .hero-inner { padding: 6.5rem 1.3rem 0; }
     .final { padding: 6rem 1.3rem; }
     .compare-side { padding: 2rem 1.4rem 2.4rem; }
@@ -726,6 +813,15 @@
 <!-- MOBILE PROGRESS BAR -->
 <div id="mobileBar" aria-hidden="true"><i id="mobileBarFill"></i></div>
 
+<!-- MOBILE STAGE PILL -->
+<div id="mobileStage" aria-hidden="true">
+  <span class="ms-ico">🧍</span>
+  <span class="ms-track"><i id="msTrackFill"></i></span>
+  <span class="ms-ico">⚡</span>
+  <span class="ms-pct" id="msPct">0%</span>
+  <span class="ms-label" id="msLabel">HUMAN</span>
+</div>
+
 <!-- NAV -->
 <nav id="nav">
   <a class="logo" href="#"><span class="logo-mark"></span>THE SUPERHUMAN CO.</a>
@@ -733,6 +829,7 @@
     <li><a href="#manifesto">Mission</a></li>
     <li><a href="#devolution">The Downgrade</a></li>
     <li><a href="#diagnosis">Diagnostic</a></li>
+    <li><a href="#trust">Standards</a></li>
     <li><a href="#proof">Transmissions</a></li>
   </ul>
   <button class="btn btn-volt">Begin Upgrade</button>
@@ -750,7 +847,7 @@
       <span class="row"><span>FOR <span class="glitch-word" id="glitchWord">MORE.</span></span></span>
     </h1>
     <p class="hero-sub">
-      Your body is running <strong>ancient hardware</strong> against modern chaos — broken sleep, chronic stress, depleted recovery. We build the botanical operating system that <strong>upgrades it back.</strong>
+      Modern life quietly drains your sleep, energy, focus and recovery — <strong>and you've learned to call that normal.</strong> We build science-led botanical formulations, and the daily routines around them, to take it back.
     </p>
     <div class="hero-cta">
       <button class="btn btn-volt btn-big" onclick="document.getElementById('diagnosis').scrollIntoView({behavior:'smooth'})">Run My Diagnostic — Free</button>
@@ -785,31 +882,31 @@
     <div class="mani-grid">
       <div class="mani-statement rv rv2">
         We are not a supplement company.<br><br>
-        We are a company that believes every person is walking around at <em>60% of themselves</em> — and has quietly accepted it as normal.<br><br>
-        Our job is to give you the other <em>40% back.</em>
+        We believe most people are living <em>well below</em> what their bodies are actually capable of — and have quietly accepted it as normal.<br><br>
+        Our job is to <em>close that gap.</em>
       </div>
 
       <div class="rv rv3">
         <div class="body-copy mani-copy">
-          <p>Modern life made a trade you never agreed to: convenience in exchange for your biology. Processed food for your gut. Screens for your sleep. Chronic stress for your nervous system. Chairs for your body.</p>
-          <p><strong>The Superhuman Co. exists to reverse that trade.</strong> We study what actually degrades modern humans, then build targeted, science-led botanical formulations for each specific problem — backed by education, daily habit systems, and a community of people rebuilding themselves alongside you.</p>
+          <p>Modern life made a trade you never agreed to: convenience in exchange for your biology. Processed food for your gut. Screens for your sleep. Chronic stress for your nervous system.</p>
+          <p><strong>The Superhuman Co. exists to reverse that trade</strong> — with targeted, science-led botanical formulations, daily habit systems, and a community rebuilding alongside you.</p>
         </div>
         <div class="mani-tenets">
           <div class="tenet">
             <span class="tenet-key">WE MAKE</span>
-            <span class="tenet-val"><strong>Targeted formulations, not one-size kits.</strong> Your problem could be sleep, liver, joints, energy, or stress. Each gets its own precisely-built answer — you take what your body needs, nothing else.</span>
+            <span class="tenet-val"><strong>Targeted formulations, not one-size kits.</strong> Sleep, liver, joints, stress — each problem gets its own precise answer.</span>
           </div>
           <div class="tenet">
             <span class="tenet-key">WE TEACH</span>
-            <span class="tenet-val"><strong>The science behind every claim.</strong> Every ingredient, every dose, on the label and explained. If we can't show you why it works, we don't sell it.</span>
+            <span class="tenet-val"><strong>The science behind every claim.</strong> Every ingredient and dose, on the label and explained.</span>
           </div>
           <div class="tenet">
             <span class="tenet-key">WE BUILD</span>
-            <span class="tenet-val"><strong>Routines, not dependencies.</strong> A formulation in a cupboard does nothing. We build the daily ritual around it — trackers, protocols, challenges — so it actually happens.</span>
+            <span class="tenet-val"><strong>Routines, not dependencies.</strong> Trackers, protocols, challenges — so the ritual actually happens.</span>
           </div>
           <div class="tenet">
             <span class="tenet-key">WE ARE</span>
-            <span class="tenet-val"><strong>A movement, with products as the tools.</strong> Founders, athletes, students, parents — anyone who refuses to accept "tired all the time" as a personality.</span>
+            <span class="tenet-val"><strong>A movement, with products as the tools.</strong></span>
           </div>
         </div>
       </div>
@@ -821,8 +918,8 @@
 <section class="devolution" id="devolution">
   <div class="wrap">
     <div class="kicker rv">Phase 02 — The Downgrade</div>
-    <h2 class="h2 rv rv1">YOUR ANCESTORS WERE<br>THE ORIGINAL <em>SUPERHUMANS.</em></h2>
-    <p class="body-copy devo-sub rv rv2">Same DNA. Same hardware. Completely different operating conditions. Drag the divider and see what 10,000 years of "progress" did to the human machine.</p>
+    <h2 class="h2 rv rv1">YOUR BODY WAS BUILT<br>FOR A <em>DIFFERENT WORLD.</em></h2>
+    <p class="body-copy devo-sub rv rv2">Same body — radically different conditions. Modern environments challenge a system that evolved outdoors, in motion, in sync with the sun. Drag and see the difference.</p>
 
     <div class="compare rv rv3" id="compare">
       <!-- MODERN (bottom layer) -->
@@ -839,7 +936,7 @@
               <div class="cmp-row"><span class="lab">Stress: Short Bursts</span><span class="cmp-bar"><i style="width:10%"></i></span></div>
               <div class="cmp-row"><span class="lab">Screen Exposure</span><span class="cmp-bar"><i style="width:95%"></i></span></div>
             </div>
-            <p class="cmp-note">7 hrs indoors under artificial light. 5,000 steps. Cortisol switched on from the first notification to the last scroll. <strong>The hardware didn't change. The environment declared war on it.</strong></p>
+            <p class="cmp-note">Indoors under artificial light. Barely moving. Stress that never fully switches off. <strong>The body didn't change — its conditions did.</strong></p>
           </div>
 
           <div class="cmp-figure">
@@ -898,7 +995,7 @@
               <div class="cmp-row"><span class="lab">Stress: Short Bursts</span><span class="cmp-bar"><i style="width:90%"></i></span></div>
               <div class="cmp-row"><span class="lab">Screen Exposure</span><span class="cmp-bar"><i style="width:0%"></i></span></div>
             </div>
-            <p class="cmp-note">Sunrise to sunset outdoors. 15–20 km on foot. Stress that spiked, resolved, and switched off. <strong>Deep sleep by default — because the system ran the way it was designed to.</strong></p>
+            <p class="cmp-note">Outdoors from sunrise to sunset. Constantly moving. Stress that spiked, resolved, and switched off. <strong>Deep sleep came by default.</strong></p>
           </div>
 
           <div class="cmp-figure">
@@ -1016,7 +1113,7 @@
           <div class="scan-row" data-k="stress"><span class="metric">STRESS REGULATION</span><span class="value"><span class="scan-bar"><i></i></span><span class="pct">--</span></span></div>
           <div class="scan-row" data-k="focus"><span class="metric">FOCUS CAPACITY</span><span class="value"><span class="scan-bar"><i></i></span><span class="pct">--</span></span></div>
           <div class="scan-row" data-k="recovery"><span class="metric">RECOVERY SPEED</span><span class="value"><span class="scan-bar"><i></i></span><span class="pct">--</span></span></div>
-          <div class="scan-row" data-k="ambition"><span class="metric">AMBITION</span><span class="value"><span class="scan-bar"><i></i></span><span class="pct">--</span></span></div>
+          <div class="scan-row scan-amb"><span class="metric">AMBITION</span><span class="amb-val">UNMEASURED — THAT PART IS ON YOU</span></div>
           <div class="scan-verdict" id="scanVerdict">ENTER YOUR INPUTS AND RUN THE SCAN.</div>
           <div class="scan-cta" id="scanCta">
             <button class="btn btn-volt" style="width:100%; padding:1rem;">GET MY UPGRADE PLAN →</button>
@@ -1024,8 +1121,8 @@
         </div>
 
         <div class="body-copy diag-side" style="margin-top:2.2rem;">
-          <div class="diag-pull">The gap between your ambition and your infrastructure is the most <em>expensive</em> gap in your life.</div>
-          <p>Whatever the scan shows — your problem is specific. Broken sleep is not the same problem as a stressed liver or aching joints. <strong>So the answer shouldn't be the same bottle for everyone either.</strong> That's exactly what we build differently.</p>
+          <div class="diag-pull">The gap between your ambition and your body is the most <em>expensive</em> gap in your life.</div>
+          <p>Whatever the scan shows, your problem is specific — broken sleep is not a stressed liver. <strong>So the answer shouldn't be the same bottle for everyone.</strong> That's what we build differently.</p>
         </div>
       </div>
     </div>
@@ -1047,35 +1144,88 @@
       <div class="pillar rv rv1">
         <div class="pillar-code">01 / DIAGNOSE</div>
         <div class="pillar-name">FIND THE REAL PROBLEM</div>
-        <p class="pillar-desc">Fatigue can come from sleep, liver, gut, or stress — four different roots, four different answers. We start with <strong>your specific breakdown</strong>, not a bestseller list. The diagnostic maps it in minutes.</p>
+        <p class="pillar-desc">Fatigue can come from sleep, liver, gut, or stress — four different roots, four different answers. <strong>We start with your specific breakdown.</strong></p>
       </div>
       <div class="pillar rv rv2">
         <div class="pillar-code">02 / FORMULATE</div>
         <div class="pillar-name">SCIENCE-LED BOTANICALS</div>
-        <p class="pillar-desc">Time-tested botanical intelligence, held to modern clinical standards. <strong>Exact doses printed on every label.</strong> No proprietary blends hiding underdosed ingredients. If we can't explain why it works, it doesn't ship.</p>
+        <p class="pillar-desc">Botanical intelligence held to modern clinical standards. <strong>Exact doses on every label</strong> — if we can't explain why it works, it doesn't ship.</p>
       </div>
       <div class="pillar rv rv3">
         <div class="pillar-code">03 / RITUALIZE</div>
         <div class="pillar-name">BUILD THE DAILY SYSTEM</div>
-        <p class="pillar-desc">The formulation is 40% of the result. The other 60% is the routine around it — <strong>habit trackers, morning and night protocols, challenges</strong> — designed so the ritual survives your busiest week.</p>
+        <p class="pillar-desc">The formulation is half the result. The routine around it is the rest — <strong>trackers and protocols built to survive your busiest week.</strong></p>
       </div>
       <div class="pillar rv rv4">
         <div class="pillar-code">04 / ASCEND</div>
         <div class="pillar-name">RISE WITH THE COLLECTIVE</div>
-        <p class="pillar-desc">Every habit you've started alone has died alone. Here you rebuild alongside <strong>a community of operators on the same climb</strong> — check-ins, leaderboards, and people who notice when you go quiet.</p>
+        <p class="pillar-desc">Habits started alone die alone. Here you rebuild with <strong>a community on the same climb</strong> — check-ins, streaks, people who notice.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- STATS -->
-<section class="stats">
+<!-- TRUST / STANDARDS -->
+<section class="trust" id="trust">
   <div class="wrap">
-    <div class="stats-grid rv">
-      <div class="stat-cell"><div class="stat-num"><span class="count" data-t="100">0</span><sup>%</sup></div><div class="stat-lab">Label Transparency</div></div>
-      <div class="stat-cell"><div class="stat-num"><span class="count" data-t="1">0</span></div><div class="stat-lab">Problem Per Formulation</div></div>
-      <div class="stat-cell"><div class="stat-num"><span class="count" data-t="0">0</span></div><div class="stat-lab">Proprietary Blends. Ever.</div></div>
-      <div class="stat-cell"><div class="stat-num"><span class="count" data-t="30">0</span><sup>D</sup></div><div class="stat-lab">Money-Back Guarantee</div></div>
+    <div class="kicker rv">Phase 05 — Why Trust Us</div>
+    <h2 class="h2 rv rv1">BOLD PROMISES.<br><em>BORING</em> PROOF.</h2>
+    <p class="body-copy trust-sub rv rv2">The brand talks big. The lab work behind it is deliberately unsexy: exact doses, independent tests, and labels that hide nothing.</p>
+
+    <div class="trust-grid">
+      <div class="trust-badge rv rv1">
+        <div class="tb-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L14.5 9.5H22L16 14L18 21.5L12 17L6 21.5L8 14L2 9.5H9.5L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+        <div class="tb-title">CLINICAL DOSES</div>
+        <div class="tb-desc">Every ingredient at the dose the studies actually used.</div>
+      </div>
+      <div class="trust-badge rv rv2">
+        <div class="tb-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M9 3H15M10 3V9L4.5 18.5C4 19.5 4.7 21 6 21H18C19.3 21 20 19.5 19.5 18.5L14 9V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M7 15H17" stroke="currentColor" stroke-width="1.5"/></svg></div>
+        <div class="tb-title">THIRD-PARTY TESTED</div>
+        <div class="tb-desc">Every batch verified by independent labs — not by us.</div>
+      </div>
+      <div class="trust-badge rv rv3">
+        <div class="tb-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 8H16M8 12H16M8 16H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="tb-title">FULL LABEL TRANSPARENCY</div>
+        <div class="tb-desc">Exact milligrams printed. Nothing hidden anywhere.</div>
+      </div>
+      <div class="trust-badge rv rv1">
+        <div class="tb-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M8 8L16 16M16 8L8 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="tb-title">ZERO PROPRIETARY BLENDS</div>
+        <div class="tb-desc">No mystery mixes hiding underdosed ingredients. Ever.</div>
+      </div>
+      <div class="trust-badge rv rv2">
+        <div class="tb-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M3 21V11L12 4L21 11V21" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 21V14H15V21" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+        <div class="tb-title">GMP MANUFACTURING</div>
+        <div class="tb-desc">Made in certified facilities. Every batch traceable.</div>
+      </div>
+      <div class="trust-badge rv rv3">
+        <div class="tb-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L19 6V11C19 15.5 16 19.5 12 21C8 19.5 5 15.5 5 11V6L12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 12L11 14L15 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="tb-title">30-DAY GUARANTEE</div>
+        <div class="tb-desc">Doesn't work for you? Full money back. No forms, no fight.</div>
+      </div>
+    </div>
+
+    <!-- LABEL VS LABEL -->
+    <div class="label-duel rv rv2">
+      <div class="ld-card ld-them">
+        <div class="ld-tag">A TYPICAL LABEL</div>
+        <div class="ld-name">"Proprietary Performance Blend"</div>
+        <div class="ld-row"><span>Proprietary Blend Complex</span><span class="ld-q">1,450 mg*</span></div>
+        <div class="ld-row ld-blur"><span>Ashwagandha (some amount)</span><span class="ld-q">?</span></div>
+        <div class="ld-row ld-blur"><span>Rhodiola (some amount)</span><span class="ld-q">?</span></div>
+        <div class="ld-row ld-blur"><span>Fillers (a lot, probably)</span><span class="ld-q">?</span></div>
+        <div class="ld-foot">*Individual quantities not disclosed. Could be 90% filler. You'll never know.</div>
+      </div>
+      <div class="ld-vs">VS</div>
+      <div class="ld-card ld-ours">
+        <div class="ld-tag">OUR LABEL</div>
+        <div class="ld-name">Everything. Exactly.</div>
+        <div class="ld-row"><span>Ashwagandha KSM-66®</span><span class="ld-a">600 mg ✓</span></div>
+        <div class="ld-row"><span>Magnesium Glycinate</span><span class="ld-a">310 mg ✓</span></div>
+        <div class="ld-row"><span>L-Theanine</span><span class="ld-a">200 mg ✓</span></div>
+        <div class="ld-row"><span>Fillers &amp; hidden extras</span><span class="ld-a">0 mg ✓</span></div>
+        <div class="ld-foot ld-foot-good">Every milligram declared. Every batch lab-verified.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -1083,7 +1233,7 @@
 <!-- TRANSMISSIONS -->
 <section class="proof" id="proof">
   <div class="wrap">
-    <div class="kicker rv">Phase 05 — Transmissions</div>
+    <div class="kicker rv">Phase 06 — Transmissions</div>
     <h2 class="h2 rv rv1">SIGNALS FROM THE<br><em>UPGRADED.</em></h2>
 
     <div class="proof-grid">
@@ -1173,6 +1323,10 @@
   const meterPct = document.getElementById('meterPct');
   const meterStage = document.getElementById('meterStage');
   const mobileBarFill = document.getElementById('mobileBarFill');
+  const mobileStage = document.getElementById('mobileStage');
+  const msTrackFill = document.getElementById('msTrackFill');
+  const msPct = document.getElementById('msPct');
+  const msLabel = document.getElementById('msLabel');
   const stages = [[0,'HUMAN'],[25,'AWAKENING'],[55,'ASCENDING'],[85,'SUPERHUMAN']];
   function updateMeter() {
     const h = document.documentElement;
@@ -1182,9 +1336,13 @@
     meterNode.style.bottom = pct + '%';
     meterPct.textContent = pct + '%';
     mobileBarFill.style.width = pct + '%';
+    msTrackFill.style.width = pct + '%';
+    msPct.textContent = pct + '%';
     let st = stages[0][1];
     for (const [t, name] of stages) if (pct >= t) st = name;
     meterStage.textContent = st;
+    msLabel.textContent = st;
+    mobileStage.classList.toggle('show', pct > 2 && pct < 97);
   }
   window.addEventListener('scroll', updateMeter, { passive: true });
   updateMeter();
@@ -1322,8 +1480,7 @@
       energy:   clamp((2 - tired) * 28 + (2 - crash) * 22, 5, 98),
       stress:   clamp((10 - stress) * 8 + (16 - screen) * 1.4, 5, 98),
       focus:    clamp((16 - screen) * 4.5 + (2 - crash) * 14, 5, 98),
-      recovery: clamp(ex * 9 + (sleep - 4) * 5.5, 5, 98),
-      ambition: 90 + Math.floor(Math.random() * 8)  // always superhuman
+      recovery: clamp(ex * 9 + (sleep - 4) * 5.5, 5, 98)
     };
 
     const panel = document.getElementById('scanPanel');
@@ -1339,17 +1496,19 @@
     verdict.textContent = 'ANALYSING BIOLOGICAL SIGNALS…';
     cta.classList.remove('show');
     panel.querySelectorAll('.scan-row').forEach(r => {
-      r.querySelector('.scan-bar i').style.width = '0%';
+      const bar = r.querySelector('.scan-bar i');
+      if (!bar) return;
+      bar.style.width = '0%';
       r.querySelector('.pct').textContent = '--';
     });
 
     setTimeout(() => {
-      const rows = panel.querySelectorAll('.scan-row');
+      const rows = panel.querySelectorAll('.scan-row[data-k]');
       let sum = 0, n = 0;
       rows.forEach((row, i) => {
         const k = row.dataset.k;
         const v = scores[k];
-        if (k !== 'ambition') { sum += v; n++; }
+        sum += v; n++;
         setTimeout(() => {
           const bar = row.querySelector('.scan-bar i');
           bar.style.width = v + '%';
@@ -1362,19 +1521,18 @@
       const avg = Math.round(sum / n);
       setTimeout(() => {
         panel.classList.remove('scanning');
-        const amb = scores.ambition;
         if (avg < 45) {
           status.textContent = '● CRITICAL'; status.classList.add('bad');
           verdict.classList.add('bad');
-          verdict.textContent = `VERDICT: AMBITION AT ${amb}%. INFRASTRUCTURE AT ${avg}%. YOUR HARDWARE IS CAPABLE — YOUR OPERATING SYSTEM IS FAILING YOU.`;
+          verdict.textContent = `VERDICT: YOUR BODY IS RUNNING AT ${avg}%. HOW HIGH YOUR AMBITION RUNS — ONLY YOU KNOW. IF IT'S HIGHER THAN ${avg}%, THAT GAP IS COSTING YOU EVERY DAY.`;
         } else if (avg < 65) {
           status.textContent = '● DEGRADED'; status.classList.add('bad');
           verdict.classList.add('bad');
-          verdict.textContent = `VERDICT: RUNNING AT ${avg}% WHILE YOUR AMBITION RUNS AT ${amb}%. THAT GAP IS COSTING YOU EVERY SINGLE DAY.`;
+          verdict.textContent = `VERDICT: YOUR BODY IS AT ${avg}%. WE DIDN'T MEASURE YOUR AMBITION — BUT IF IT'S BIGGER THAN ${avg}%, YOU ALREADY KNOW WHAT THE PROBLEM IS.`;
         } else {
           status.textContent = '● STRONG BASE'; status.classList.add('good');
           verdict.classList.add('good');
-          verdict.textContent = `VERDICT: SOLID BASELINE AT ${avg}%. NOW IMAGINE IT MATCHED TO YOUR ${amb}% AMBITION. THE CEILING IS HIGHER THAN YOU THINK.`;
+          verdict.textContent = `VERDICT: SOLID BASE AT ${avg}%. THE ONLY QUESTION LEFT — DOES YOUR AMBITION STOP THERE?`;
         }
         cta.classList.add('show');
       }, rows.length * 220 + 600);
